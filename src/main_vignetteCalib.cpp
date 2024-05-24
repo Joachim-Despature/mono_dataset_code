@@ -35,6 +35,10 @@
 
 #include <aruco/aruco.h>
 #include <aruco/cvdrawingutils.h>
+
+
+
+
 #include <opencv2/highgui/highgui.hpp>
 
 #include "BenchmarkDatasetReader.h"
@@ -205,7 +209,7 @@ int main( int argc, char** argv )
 	printf("SEQUENCE NAME: %s!\n", argv[1]);
 
 	int w_out, h_out;
-	//Eigen::Matrix3f K = reader->getUndistorter()->getK_rect();
+	Eigen::Matrix3f K = reader->getUndistorter()->getK_rect();
 	w_out = reader->getUndistorter()->getOutputDims()[0];
 	h_out = reader->getUndistorter()->getOutputDims()[1];
 
@@ -229,7 +233,7 @@ int main( int argc, char** argv )
 
 	for(int i=0;i<reader->getNumImages();i+=imageSkip)
 	{
-        std::vector<aruco::Marker> Markers;
+        std::vector<aruco::Marker> Markers = {};
 		ExposureImage* img = reader->getImage(i,true, false, false, false);
 
 		cv::Mat InImage;
@@ -321,7 +325,7 @@ int main( int argc, char** argv )
 				int v_dT = plane2imgY[idxT]+0.5;
 
 				if(u_dS>=0 && v_dS >=0 && u_dS<wI && v_dS<hI && u_dT>=0 && v_dT >=0 && u_dT<wI && v_dT<hI)
-					cv::line(dbgImg, cv::Point(u_dS, v_dS), cv::Point(u_dT, v_dT), cv::Scalar(0,0,255), 10, CV_AA);
+					cv::line(dbgImg, cv::Point(u_dS, v_dS), cv::Point(u_dT, v_dT), cv::Scalar(0,0,255), 10, cv::LINE_AA);
 			}
 
 
@@ -338,7 +342,7 @@ int main( int argc, char** argv )
 				int v_dT = plane2imgY[idxT]+0.5;
 
 				if(u_dS>=0 && v_dS >=0 && u_dS<wI && v_dS<hI && u_dT>=0 && v_dT >=0 && u_dT<wI && v_dT<hI)
-					cv::line(dbgImg, cv::Point(u_dS, v_dS), cv::Point(u_dT, v_dT), cv::Scalar(0,0,255), 10, CV_AA);
+					cv::line(dbgImg, cv::Point(u_dS, v_dS), cv::Point(u_dT, v_dT), cv::Scalar(0,0,255), 10, cv::LINE_AA);
 			}
 
 
