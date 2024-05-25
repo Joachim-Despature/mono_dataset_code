@@ -81,7 +81,7 @@ add_executable(vignetteCalib src/main_vignetteCalib.cpp src/FOVUndistorter.cpp s
     aruco/src/cameraparameters.cpp aruco/src/ar_omp.cpp)
 
 # Link the libraries
-target_link_libraries(vignetteCalib ${OpenCV_LIBS} /usr/local/lib/libaruco.so.3.1.12 ${LIBZIP_LIBRARIES})
+target_link_libraries(vignetteCalib ${OpenCV_LIBS} /usr/local/lib/libaruco.so.1.3.0 ${LIBZIP_LIBRARIES})
 
 
 
