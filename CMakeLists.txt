@@ -6,7 +6,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 set(BUILD_TYPE Release)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 set(EXECUTABLE_OUTPUT_PATH bin)
 
 find_package(Eigen3 REQUIRED)
@@ -36,17 +35,53 @@ target_link_libraries(playDataset ${OpenCV_LIBS} ${LIBZIP_LIBRARY})
 
 
 
-SET(CMAKE_MODULE_PATH ${CMAKE_INSTALL_PREFIX}/lib/cmake/ )
-find_package(aruco)
+# Set the path to your ArUco installation
+#set(aruco_DIR "/usr/local/include/aruco")
 
+
+# Find the required packages
+#find_package(OpenCV REQUIRED)
+#find_package(aruco REQUIRED)
+
+# Include directories
+include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${aruco_INCLUDE_DIRS})
+
+# Add your executable
+#add_executable(vignetteCalib src/main_vignetteCalib.cpp src/FOVUndistorter.cpp src/PhotometricUndistorter.cpp)
+#target_link_libraries(vignetteCalib PRIVATE ${OpenCV_LIBRARIES})
+# Link the libraries
+#target_link_libraries(vignetteCalib ${OpenCV_LIBS} ${LIBZIP_LIBRARY} ${aruco_LIBRARIES})
+
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+# Set the path to your ArUco installation
+set(aruco_DIR "/usr/local/include/aruco/") #
+list(APPEND CMAKE_MODULE_PATH "/usr/local/lib/cmake")
+# Find the required packages
+find_package(OpenCV REQUIRED)
+find_package(aruco REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(LIBZIP REQUIRED libzip)
 IF(aruco_FOUND)
-	add_executable(vignetteCalib src/main_vignetteCalib.cpp src/FOVUndistorter.cpp src/PhotometricUndistorter.cpp)
-	target_link_libraries(vignetteCalib ${OpenCV_LIBS} ${aruco_LIBS} ${LIBZIP_LIBRARY})
+		message("================ ARUCO FOUND ========================")
 ELSE()
 	message("================ aruco not found. not compiling vignetteCalib. ========================")
 ENDIF()
+# Include directories
+include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${aruco_INCLUDE_DIRS})
+include_directories(${LIBZIP_INCLUDE_DIRS})
 
 
+# Add your executable
+add_executable(vignetteCalib src/main_vignetteCalib.cpp src/FOVUndistorter.cpp src/PhotometricUndistorter.cpp aruco/src/markerdetector.cpp aruco/src/markerdetector.cpp
+    aruco/src/marker.cpp
+    aruco/src/cameraparameters.cpp aruco/src/ar_omp.cpp)
+
+# Link the libraries
+target_link_libraries(vignetteCalib ${OpenCV_LIBS} /usr/local/lib/libaruco.so.3.1.12 ${LIBZIP_LIBRARIES})
 
 
 
